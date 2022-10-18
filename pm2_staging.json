@@ -1,0 +1,20 @@
+{
+  "apps": [
+    {
+      "name": "istante",
+      "script": "app.js",
+      "exec_mode": "fork",
+      "log_date_format": "YYYY-MM-DD HH:mm:ss.SSS",
+      "out_file": "~/.pm2/logs/istante.log",
+      "error_file": "~/.pm2/logs/istante.log",
+      "max_memory_restart": "1024M",
+      "env": {
+        "PORT": 18189,
+        "NODE_ENV": "staging",
+        "TOKEN_SECRET": "6a2ofuhi6dqq09yjgcaid7q1zcde2a029zas0hmw5lnvsgv3rzm5o3910ikt2mopqz2wkw5bjc36b3br9xm0htai5j3qqdscs4jo9o16elsrqy464i922e4omslip2h2",
+        "TOKEN_TTL": "60000s",
+        "REACT_APP_BASE_URL": "https://istante-ui.alchemylms.com"
+      }
+    }
+  ]
+}

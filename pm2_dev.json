@@ -1,0 +1,22 @@
+{
+  "apps" : [
+    {
+      "name"      : "istante_moo",
+      "script"    : "app.js",
+      "exec_mode" : "fork",
+      "node_args" : ["--inspect=9800"],
+      "watch"       : [ "api", "config", "assets" ],
+      "ignore_watch": [ "assets/styles","assets/js", "assets/images/signatures", "assets/uploads", "assets/ActumCredit" , "assets/firstAssociatesUpload" ],
+      "log_date_format": "YYYY-MM-DD HH:mm:ss.SSS",
+      "out_file": "~/.pm2/logs/istante.log",
+      "error_file": "~/.pm2/logs/istante.log",
+      "max_memory_restart": "2048M",
+      "env" : {
+        "PORT": 1337,
+        "NODE_ENV": "development",
+        "TOKEN_SECRET": "6a2ofuhi6dqq09yjgcaid7q1zcde2a029zas0hmw5lnvsgv3rzm5o3910ikt2mopqz2wkw5bjc36b3br9xm0htai5j3qqdscs4jo9o16elsrqy464i922e4omslip2h2",
+        "TOKEN_TTL": "60000s"
+      }
+    }
+  ]
+}

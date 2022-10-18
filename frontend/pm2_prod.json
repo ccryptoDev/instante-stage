@@ -1,0 +1,22 @@
+{
+  "apps": [
+    {
+      "name": "Istante-frontend",
+      "script": "yarn",
+      "args": "start",
+      "watch": false,
+      "log_date_format": "YYYY-MM-DD HH:mm:ss.SSS",
+      "out_file": "~/.pm2/logs/Istante.log",
+      "error_file": "~/.pm2/logs/Istante.log",
+      "max_memory_restart": "1024M",
+      "env": {
+        "NODE_ENV": "staging",
+        "REACT_APP_BASE_URL": "https://api.istantelending.com",
+        "REACT_APP_ADMIN_BASE_URL": "https://lms-api.istantelending.com",
+        "LMS_APP_BASE_URL":"https://lms.istantelending.com",
+        "DANGEROUSLY_DISABLE_HOST_CHECK": true,
+        "PORT": 3001
+      }
+    }
+  ]
+}
