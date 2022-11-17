@@ -8,9 +8,9 @@ const LastStep = () => {
   const goToPortal = () => {
     const borrowerPortalLink = process.env.LMS_APP_BASE_URL;
     window.location.replace(
-      String(
-        borrowerPortalLink || "https://Istante-lms-ui.alchemylms.com"
-      ).concat("/login")
+      String(borrowerPortalLink || "https://lms.istantelending.com").concat(
+        "/login"
+      )
     );
   };
   return (
