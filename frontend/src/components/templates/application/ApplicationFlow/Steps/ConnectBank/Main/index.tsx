@@ -58,7 +58,7 @@ const Auto = () => {
 
   const title = "Checking Account Verification";
   const iframeUrl =
-    "https://istantelending-iframe.private.fin.ag/v2/?demo=true&redirectUrl=https://flinks.com/contact/thank-you&accountSelectorNoTitle=true&accountSelectorEnable=true&innerRedirect=true&theme=light&consentEnable=true&customerName=Istante Lending&backgroundColor=f7f7f7&foregroundColor1=000000&desktopLayout=true&headerEnable=false&institutionFilterEnable=true&daysOfTransactions=Days365&accountSelectorCurrency=usd&showAllOperationsAccounts=true";
+    "https://istantelending-iframe.private.fin.ag/v2/?demo=false&redirectUrl=https://flinks.com/contact/thank-you&accountSelectorNoTitle=true&accountSelectorEnable=true&innerRedirect=true&theme=light&consentEnable=true&customerName=Istante Lending&backgroundColor=f7f7f7&foregroundColor1=000000&desktopLayout=true&headerEnable=false&institutionFilterEnable=true&daysOfTransactions=Days365&accountSelectorCurrency=usd&showAllOperationsAccounts=true";
 
   const onFetchLoginId = async ({
     loginId,
