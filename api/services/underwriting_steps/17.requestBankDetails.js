@@ -26,22 +26,37 @@ const requestBankDetails = async ({
   try {
     const { loginId, requestId, userbank, selectedAccountId } = flinkCreds;
 
-    const userAccountDetails = await FlinksService.retryGetAccountDetails(flinkCreds, 30);
+    const userAccountDetails = await FlinksService.retryGetAccountDetails(
+      flinkCreds,
+      30
+    );
 
-    sails.log.info("17thStep#requestBankDetails.requestBankDetails::userAccountDetails", userAccountDetails);
+    sails.log.info(
+      "17thStep#requestBankDetails.requestBankDetails::userAccountDetails",
+      userAccountDetails
+    );
 
     const selectedCheckingAccount = userAccountDetails?.Accounts?.[0];
-    FlinksService.storeAchAccount(userDetail, {
-      routingNumber: selectedCheckingAccount?.RoutingNumber || selectedCheckingAccount?.TransitNumber,
-      accountNumber: selectedCheckingAccount?.AccountNumber,
-      institution: userAccountDetails?.Institution,
-    });
+    await FlinksService.storeAchAccount(
+      userDetail,
+      {
+        routingNumber:
+          selectedCheckingAccount?.RoutingNumber ||
+          selectedCheckingAccount?.TransitNumber,
+        accountNumber: selectedCheckingAccount?.AccountNumber,
+        institution: userAccountDetails?.Institution,
+      },
+      screenTracking.id
+    );
 
     const {
       data: userAttrResponse,
     } = await FlinkService.getUserAnalysisAttribute(flinkCreds);
 
-    sails.log.info("17thStep#requestBankDetails.requestBankDetails::userAttrResponse", userAttrResponse);
+    sails.log.info(
+      "17thStep#requestBankDetails.requestBankDetails::userAttrResponse",
+      userAttrResponse
+    );
 
     ClarityResponseModel.saveClarityResponse(
       screenTracking,
@@ -75,14 +90,16 @@ const requestBankDetails = async ({
       },
     } = selectedCheckingAccount?.Holder;
 
-    if (selectedCheckingAccount?.Holder.Name === "George Perry") {
-      Object.assign(context.underwritingDecision, {
-        status: PASSED,
-        reason: "bypassed",
-      });
+    console.log({ selectedCheckingAccount: selectedCheckingAccount?.Holder });
 
-      return setScreenTrackingContext(screenTracking, context);
-    }
+    // if (selectedCheckingAccount?.Holder.Name === "George Perry") {
+    //   Object.assign(context.underwritingDecision, {
+    //     status: PASSED,
+    //     reason: "bypassed",
+    //   });
+
+    //   return setScreenTrackingContext(screenTracking, context);
+    // }
 
     const validationsEnum = {
       STOP_PAYMENTS: "Multiple stop payments",
@@ -437,20 +454,32 @@ const requestBankDetails = async ({
     ]);
     const isTestSsn = sails.config.checkTestSsn(screenTracking.user.ssnNumber);
 
-    for (const key in validations) {
-      // TEST ONLY
-      if (isTestSsn && skipIfTest.has(key)) {
-        continue;
-      }
+    Object.assign(context.underwritingDecision, {
+      status: QUEUED,
+      reason: "Flinks Maintenance",
+    });
+    await communicationService.sendApplicationCommunication({
+      communicationCode: "QRA",
+      user: userDetail,
+      screenTracking,
+    });
+    // for (const key in validations) {
+    //   // TEST ONLY
+    //   if (isTestSsn && skipIfTest.has(key)) {
+    //     continue;
+    //   }
 
-      await validations[key]();
+    //   await validations[key]();
 
-      if (context.underwritingDecision.status !== PASSED) {
-        break;
-      }
-    }
+    //   if (context.underwritingDecision.status !== PASSED) {
+    //     break;
+    //   }
+    // }
 
-    sails.log.info("17thStep#requestBankDetails.requestBankDetails::finished", context);
+    sails.log.info(
+      "17thStep#requestBankDetails.requestBankDetails::finished",
+      context
+    );
     return setScreenTrackingContext(screenTracking, context);
   } catch (error) {
     sails.log.error("17thStep#requestBankDetails::Err ::", error);
